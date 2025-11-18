@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEditor;
+using Unity.VisualScripting;
 
 public class Throw : MonoBehaviour
 {
@@ -16,8 +18,8 @@ public class Throw : MonoBehaviour
     public KeyCode throwKey = KeyCode.Mouse0;
     //public float throwForce;
     //public float throwUpwardForce;
-    float jumpPower = 3f;
-    float duration = 0.3f;
+    [SerializeField] float jumpPower = 3f;
+    [SerializeField] float duration = 0.3f;
 
 
     bool readyToThrow;
@@ -25,6 +27,7 @@ public class Throw : MonoBehaviour
     private void Start()
     {
         readyToThrow = true;
+
     }
     private void Update()
     {
@@ -53,21 +56,25 @@ public class Throw : MonoBehaviour
 
         readyToThrow = false;
 
-        GameObject g = Instantiate(snowBall, attackPoint.position, Quaternion.identity);
+        GameObject g = Instantiate(snowBall, attackPoint.position, Quaternion.identity);// can obj pooling de toi uu
 
         //Rigidbody rbGameObj = g.GetComponent<Rigidbody>();
 
-        g.transform.DOJump(targetPoint, jumpPower, 1, duration).SetEase(Ease.OutQuad);
+        Tween jumpTween = g.transform.DOJump(targetPoint, jumpPower, 1, duration).SetEase(Ease.OutQuad).OnComplete(() => { Destroy(g); });
+                                                                        // hàm OnComplete ở đây sẽ đc gọi nếu quả bóng ném trượt khổi target
+
+        g.GetComponent<SnowBall>().Setup(jumpTween);
 
         //rbGameObj.AddForce(forceAdd, ForceMode.Impulse);
 
         totalThrows--;
         Invoke(nameof(ResetThrow), throwCooldown);
-        Destroy(g, duration + 0.1f);
+        //Destroy(g, duration);
     }
     private void ResetThrow()
     {
         readyToThrow = true;
     }
+   
 
 }
