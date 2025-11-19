@@ -29,7 +29,7 @@ public class SnowBall : MonoBehaviour
         {
             Quaternion splatRotation = Quaternion.LookRotation(-impactNormal);// "LookRotation" sẽ xoay cái Quad của chúng ta
                                                                               // sao cho nó "hướng mặt" theo hướng của bề mặt (normal)
-            Vector3 splatPos = impactPoint + (impactNormal * 0.5f) + new Vector3(0, -0.03f, 0);// Nudge (đẩy) vết bắn ra ngoài một chút (0.01f)
+            Vector3 splatPos = impactPoint + (impactNormal * 0.5f) + new Vector3(0, -0.05f, 0);// Nudge (đẩy) vết bắn ra ngoài một chút (0.01f)
                                                                                            // để tránh nó bị "nhấp nháy" (Z-fighting) khi nằm trùng mặt phẳng với tường
             GameObject splat = Instantiate(splatProjector, splatPos, splatRotation);
             splat.transform.SetParent(collision.transform);

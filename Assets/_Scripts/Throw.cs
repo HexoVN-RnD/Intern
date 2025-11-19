@@ -75,6 +75,8 @@ public class Throw : MonoBehaviour
     {
         readyToThrow = true;
     }
-   
+    
+ 
+    
 
 }
