@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4526269311364390982}
   - component: {fileID: 2098905323663070356}
   - component: {fileID: 4663658848022978306}
+  - component: {fileID: 1109755209731993783}
+  - component: {fileID: 5128239440526928772}
   m_Layer: 0
   m_Name: ImpactSnowBallEffect
   m_TagString: Untagged
@@ -4888,3 +4890,29 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &1109755209731993783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261336440628652647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 570565a910d7ab9469535f7b3f426aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 0
+  delay: 1.75
+--- !u!114 &5128239440526928772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261336440628652647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98cd1885662d6e74c801371d480c822c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

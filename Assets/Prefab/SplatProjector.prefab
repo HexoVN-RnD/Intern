@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1038399600808525729}
   - component: {fileID: 331191826046023388}
+  - component: {fileID: -4359806185841865941}
   m_Layer: 0
   m_Name: SplatProjector
   m_TagString: Untagged
@@ -51,3 +52,15 @@ Projector:
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 448
+--- !u!114 &-4359806185841865941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7777790288384358601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98cd1885662d6e74c801371d480c822c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

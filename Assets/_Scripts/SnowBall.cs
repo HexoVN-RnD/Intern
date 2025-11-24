@@ -15,7 +15,10 @@ public class SnowBall : MonoBehaviour
         Vector3 impactNormal = collision.contacts[0].normal;// lay vecto phap tuyen diem va cham
         if (impactSnowBallEffect != null)
         {
-            Instantiate(impactSnowBallEffect, impactPoint, transform.rotation);// can obj pooling de toi uu }
+            GameObject g = PoolManager.Instance.GetFromPool(impactSnowBallEffect);
+            g.transform.position = impactPoint;
+            g.transform.rotation = Quaternion.identity;
+            //Instantiate(impactSnowBallEffect, impactPoint, transform.rotation);// can obj pooling de toi uu }
         }
         Debug.Log("sasd");
         //Destroy(gameObject);
@@ -30,18 +33,30 @@ public class SnowBall : MonoBehaviour
             Quaternion splatRotation = Quaternion.LookRotation(-impactNormal);// "LookRotation" sẽ xoay cái Quad của chúng ta
                                                                               // sao cho nó "hướng mặt" theo hướng của bề mặt (normal)
             Vector3 splatPos = impactPoint + (impactNormal * 0.5f) + new Vector3(0, -0.05f, 0);// Nudge (đẩy) vết bắn ra ngoài một chút (0.01f)
-                                                                                           // để tránh nó bị "nhấp nháy" (Z-fighting) khi nằm trùng mặt phẳng với tường
-            GameObject splat = Instantiate(splatProjector, splatPos, splatRotation);
-            splat.transform.SetParent(collision.transform);
-            Projector proj = splat.GetComponent<Projector>();
+                                                                                               // để tránh nó bị "nhấp nháy" (Z-fighting) khi nằm trùng mặt phẳng với tường
+                                                                                               //GameObject splat = Instantiate(splatProjector, splatPos, splatRotation);
+            GameObject g = PoolManager.Instance.GetFromPool(splatProjector);
+            g.transform.position = splatPos;
+            g.transform.rotation = splatRotation;
+            g.transform.SetParent(collision.transform);
+            Projector proj = g.GetComponent<Projector>();
             if (proj != null)
             {
-                Material matInstance = new Material(proj.material);// Tạo bản sao material để không bị ảnh hưởng các vết khác
-                proj.material = matInstance;
-                matInstance.DOFade(0, 2f).SetDelay(2f).OnComplete(() => { Destroy(splat); });
+                if (!proj.material.name.Contains("Instance")) proj.material = new Material(proj.material);
+                                                                                                          //Material matInstance = new Material(proj.material);// Tạo bản sao material để không bị ảnh hưởng các vết khác
+                Color c = proj.material.color;// Reset màu về 1 (vì lấy từ pool có thể đang tàng hình)
+                c.a = 1f;
+                proj.material.color = c;
+
+                proj.material.DOFade(0, 2f).SetDelay(1.5f).SetLink(g).OnComplete(() =>
+                {
+                    //Destroy(splat);
+                    if (g != null) g.gameObject.SetActive(false);
+                });
             }
         }
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        gameObject.SetActive(false);
     }
     public void Setup(Tween jumpTween)
     {

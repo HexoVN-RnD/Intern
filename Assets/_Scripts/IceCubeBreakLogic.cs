@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,7 +38,12 @@ public class IceCubeBreakLogic : MonoBehaviour
 
         rb.AddForce(forceDir * forceStrenght, ForceMode.Impulse);
 
-        Destroy(gameObject, 5);
+        // Dùng DOTween để đợi 2.5s rồi tắt.
+        // SetLink(gameObject) đảm bảo nếu object bị destroy đột ngột thì lệnh này cũng hủy theo -> An toàn.
+        DOVirtual.DelayedCall(2.5f, () =>
+        {
+            gameObject.SetActive(false);
+        }).SetLink(gameObject);
 
         this.NotifyNeibors();
     }
@@ -62,16 +68,16 @@ public class IceCubeBreakLogic : MonoBehaviour
     }
     private void NotifyNeibors() // Báo cho tất cả hàng xóm biết là tôi đã rơi rồi
     {
-        foreach (var neighbor in iceNeighbors) 
+        foreach (var neighbor in iceNeighbors)
         {
             // Nếu hàng xóm chưa rơi, bảo nó kiểm tra lại độ vững chãi
-            if (neighbor != null && !neighbor.isBroken)
+            if (neighbor != null && !neighbor.isBroken && neighbor.gameObject.activeInHierarchy)//// Kiểm tra activeInHierarchy: Nếu hàng xóm đã bị ẩn rồi thì bỏ qua
             {
                 neighbor.CheckStability();
             }
         }
     }
-    private void CheckStability() 
+    private void CheckStability()
     {
         if (isBroken) return;
 
@@ -82,7 +88,7 @@ public class IceCubeBreakLogic : MonoBehaviour
         int activeNeighbors = 0;
         foreach (var neighbor in iceNeighbors)
         {
-            if (neighbor != null && !neighbor.isBroken)
+            if (neighbor != null && !neighbor.isBroken && neighbor.gameObject.activeInHierarchy)//// Kiểm tra activeInHierarchy: Nếu hàng xóm đã bị ẩn rồi thì bỏ qua
             {
                 activeNeighbors++;
             }

@@ -44,24 +44,33 @@ public class Throw : MonoBehaviour
 
         Vector3 targetPoint;
 
-        if (Physics.Raycast(ray, out hit, 100f))
+        if (Physics.Raycast(ray, out hit, 25f))
         {
             targetPoint = hit.point;
         }
         else
         {
-            targetPoint = ray.GetPoint(100f);
+            targetPoint = ray.GetPoint(25f);
         }
         Vector3 dir = (targetPoint - attackPoint.position).normalized;
 
         readyToThrow = false;
 
-        GameObject g = Instantiate(snowBall, attackPoint.position, Quaternion.identity);// can obj pooling de toi uu
+        //GameObject g = Instantiate(snowBall, attackPoint.position, Quaternion.identity);// can obj pooling de toi uu
+
+        GameObject g = PoolManager.Instance.GetFromPool(snowBall);
+        g.transform.position = attackPoint.position;
+        g.transform.rotation = Quaternion.identity;
+
 
         //Rigidbody rbGameObj = g.GetComponent<Rigidbody>();
 
-        Tween jumpTween = g.transform.DOJump(targetPoint, jumpPower, 1, duration).SetEase(Ease.OutQuad).OnComplete(() => { Destroy(g); });
-                                                                        // hàm OnComplete ở đây sẽ đc gọi nếu quả bóng ném trượt khổi target
+        Tween jumpTween = g.transform.DOJump(targetPoint, jumpPower, 1, duration).SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            //Destroy(g);
+            g.gameObject.SetActive(false);
+        });
+        // hàm OnComplete ở đây sẽ đc gọi nếu quả bóng ném trượt khổi target
 
         g.GetComponent<SnowBall>().Setup(jumpTween);
 
@@ -75,8 +84,8 @@ public class Throw : MonoBehaviour
     {
         readyToThrow = true;
     }
-    
- 
-    
+
+
+
 
 }
