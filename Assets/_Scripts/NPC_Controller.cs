@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System.Globalization;
+using UnityEngine.SceneManagement;
 
 public class NPC_Controller : MonoBehaviour
 {
@@ -12,14 +13,25 @@ public class NPC_Controller : MonoBehaviour
     [Header("Help Signal State NPC")]
     [SerializeField] GameObject helpStateNPC;
     [SerializeField] GameObject helpSignal;
+    [SerializeField] GameObject hurryUpSignal;
 
     [Header("Happy Signal State NPC")]
     [SerializeField] GameObject happyStateNPC;
     [SerializeField] GameObject happySignal;
     private Tween helpTween; // Lưu tween lại để quản lý
+    private Tween hurryUpTimerTween;
 
     private bool isRescued = false;
 
+    private void OnEnable()
+    {
+        GameEvent.OnIceBroken += TriggerHurryUp;// Đăng ký: Khi sự kiện OnIceBroken xảy ra -> Chạy hàm TriggerHurryUp
+    }
+    private void OnDisable()
+    {
+        // Hủy đăng ký: Rất quan trọng! Nếu quên dòng này sẽ gây lỗi khi reload scene
+        GameEvent.OnIceBroken -= TriggerHurryUp;
+    }
     private void Start()
     {
         this.ShowHelpState();
@@ -34,10 +46,32 @@ public class NPC_Controller : MonoBehaviour
             this.PerformRescue();
         }
     }
+    private void TriggerHurryUp()
+    {
+        if (isRescued) return;
+        if (hurryUpTimerTween != null) hurryUpTimerTween.Kill();// Hủy đếm ngược nếu được cứu
+        helpSignal.SetActive(false);
+        hurryUpSignal.SetActive(true);
+
+        // Effect rung lắc
+        hurryUpSignal.transform.DOKill();
+        hurryUpSignal.transform.localScale = Vector3.one;
+        hurryUpSignal.transform.DOPunchScale(Vector3.one * 0.2f, 0.3f);
+
+        hurryUpTimerTween = DOVirtual.DelayedCall(2.5f, () =>
+        {
+            if (!isRescued)
+            {
+                hurryUpSignal.SetActive(false);
+                helpSignal.SetActive(true);
+            }
+        }).SetLink(gameObject);
+    }
     private void ShowHelpState()
     {
         helpStateNPC.SetActive(true);
         happyStateNPC.SetActive(false);
+        hurryUpSignal.SetActive(false);
 
         helpSignal.SetActive(true);
         happySignal.SetActive(false);
@@ -53,11 +87,19 @@ public class NPC_Controller : MonoBehaviour
         happyStateNPC.SetActive(true);
 
         helpSignal.SetActive(false);
+        hurryUpSignal.SetActive(false);
         happySignal.SetActive(true);
 
         happySignal.transform.localScale = Vector3.zero;
         happySignal.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack).SetLink(happySignal); // Thêm .SetLink(...) vào các lệnh DOTween. Điều này đảm bảo nếu NPC bị tắt hoặc destroy đột ngột, các tween này sẽ tự hủy theo, tránh gây lỗi đỏ console.;
 
         happyStateNPC.transform.DOJump(happyStateNPC.transform.position, 0.5f, 2, 1f);
+
+        //Invoke("ReloadScene", 2.5f);
+        DOVirtual.DelayedCall(3.2f, ReloadScene).SetLink(gameObject);
+    }
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene("Main");
     }
 }

@@ -38,6 +38,8 @@ public class IceCubeBreakLogic : MonoBehaviour
 
         rb.AddForce(forceDir * forceStrenght, ForceMode.Impulse);
 
+        GameEvent.OnIceBroken?.Invoke();
+
         // Dùng DOTween để đợi 2.5s rồi tắt.
         // SetLink(gameObject) đảm bảo nếu object bị destroy đột ngột thì lệnh này cũng hủy theo -> An toàn.
         DOVirtual.DelayedCall(2.5f, () =>

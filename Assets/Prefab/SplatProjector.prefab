@@ -44,7 +44,7 @@ Projector:
   serializedVersion: 2
   m_NearClipPlane: 0.1
   m_FarClipPlane: 0.6
-  m_FieldOfView: 45
+  m_FieldOfView: 50
   m_AspectRatio: 1
   m_Orthographic: 0
   m_OrthographicSize: 10
