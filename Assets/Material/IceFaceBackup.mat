@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: IceFace
+  m_Name: IceFaceBackup
   m_Shader: {fileID: 4800000, guid: f9cda2af2d966b34d80db388258e9209, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -78,6 +78,6 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.05490178, g: 0.89932597, b: 0.9686274, a: 0.827451}
+    - _Color: {r: 0.05490175, g: 0.89932597, b: 0.9686274, a: 0.8627451}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

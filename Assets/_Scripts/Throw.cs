@@ -75,7 +75,10 @@ public class Throw : MonoBehaviour
         g.GetComponent<SnowBall>().Setup(jumpTween);
 
         //rbGameObj.AddForce(forceAdd, ForceMode.Impulse);
-
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayThrowSound();
+        }
         totalThrows--;
         Invoke(nameof(ResetThrow), throwCooldown);
         //Destroy(g, duration);

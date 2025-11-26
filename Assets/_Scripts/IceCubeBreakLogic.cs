@@ -40,6 +40,12 @@ public class IceCubeBreakLogic : MonoBehaviour
 
         GameEvent.OnIceBroken?.Invoke();
 
+        // Gọi SoundManager để phát tiếng vỡ
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayBreakIce();
+        }
+
         // Dùng DOTween để đợi 2.5s rồi tắt.
         // SetLink(gameObject) đảm bảo nếu object bị destroy đột ngột thì lệnh này cũng hủy theo -> An toàn.
         DOVirtual.DelayedCall(2.5f, () =>

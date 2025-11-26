@@ -23,6 +23,7 @@ public class NPC_Controller : MonoBehaviour
 
     private bool isRescued = false;
 
+
     private void OnEnable()
     {
         GameEvent.OnIceBroken += TriggerHurryUp;// Đăng ký: Khi sự kiện OnIceBroken xảy ra -> Chạy hàm TriggerHurryUp
@@ -82,6 +83,14 @@ public class NPC_Controller : MonoBehaviour
     private void PerformRescue()
     {
         isRescued = true;
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.StopHelpSound();  // Tắt tiếng kêu cứu
+            SoundManager.Instance.PlayHappySound(); // Bật tiếng reo hò
+            SoundManager.Instance.StopBGMusic(); // tat bg music
+        }
+
         if (helpTween != null) helpTween.Kill();
         helpStateNPC.SetActive(false);
         happyStateNPC.SetActive(true);
