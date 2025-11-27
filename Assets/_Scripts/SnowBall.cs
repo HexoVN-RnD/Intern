@@ -42,13 +42,14 @@ public class SnowBall : MonoBehaviour
             Projector proj = g.GetComponent<Projector>();
             if (proj != null)
             {
+                
                 if (!proj.material.name.Contains("Instance")) proj.material = new Material(proj.material);
                                                                                                           //Material matInstance = new Material(proj.material);// Tạo bản sao material để không bị ảnh hưởng các vết khác
                 Color c = proj.material.color;// Reset màu về 1 (vì lấy từ pool có thể đang tàng hình)
                 c.a = 1f;
                 proj.material.color = c;
 
-                proj.material.DOFade(0, 2f).SetDelay(1.5f).SetLink(g).OnComplete(() =>
+                proj.material.DOFade(0, 2f).SetDelay(2f).SetLink(g).OnComplete(() =>
                 {
                     //Destroy(splat);
                     if (g != null) g.gameObject.SetActive(false);

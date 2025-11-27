@@ -1,15 +1,16 @@
-﻿Shader "Projector/SnowDecal_Fix" {
+﻿Shader "Projector/SnowDecal_FinalFix" {
     Properties {
         _Color ("Main Color", Color) = (1,1,1,1)
-        _ShadowTex ("Cookie", 2D) = "gray" {} // Kéo ảnh vết tuyết vào đây trong Material
+        _ShadowTex ("Cookie", 2D) = "gray" {}
+        _BorderCutoff ("Border Cutoff", Range(0, 0.2)) = 0.05 // Khoảng cắt bỏ viền
     }
     SubShader {
         Tags {"Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent"}
         Pass {
             ZWrite Off
             ColorMask RGB
-            Blend SrcAlpha OneMinusSrcAlpha // Chế độ hòa trộn chuẩn cho trong suốt
-            Offset -1, -1 // Giúp hình nằm đè lên trên tường mà không bị nhấp nháy
+            Blend SrcAlpha OneMinusSrcAlpha
+            Offset -1, -1
 
             CGPROGRAM
             #pragma vertex vert
@@ -33,20 +34,26 @@
             
             sampler2D _ShadowTex;
             fixed4 _Color;
+            float _BorderCutoff;
             
             fixed4 frag (v2f i) : SV_Target
             {
-                // Tính toán toạ độ chiếu
                 float4 uv = UNITY_PROJ_COORD(i.uvShadow);
                 
-                // Lấy màu từ texture
+                // --- LOGIC CẮT VIỀN (BORDER CUTOFF) ---
+                // Nếu UV nằm sát mép (trong khoảng 0 -> 0.05 hoặc 0.95 -> 1), ta vứt bỏ luôn.
+                // Điều này triệt tiêu hoàn toàn các vệt sọc ở rìa.
+                if (uv.x < _BorderCutoff || uv.x > (1.0 - _BorderCutoff) || 
+                    uv.y < _BorderCutoff || uv.y > (1.0 - _BorderCutoff)) 
+                {
+                    discard; // Hoặc return fixed4(0,0,0,0);
+                }
+
                 fixed4 tex = tex2Dproj (_ShadowTex, uv);
+                
+                // Loại bỏ phần chiếu ngược
+                if (uv.w < 0) discard;
 
-                // QUAN TRỌNG: Cắt bỏ những phần chiếu ngược (back projection) hoặc ngoài tầm
-                // Nếu không có dòng này, hình có thể bị lặp lại hoặc nhòe
-                if (uv.w < 0) discard; 
-
-                // Áp dụng màu và độ trong suốt
                 return tex * _Color;
             }
             ENDCG

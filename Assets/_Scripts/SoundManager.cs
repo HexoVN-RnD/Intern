@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
@@ -13,7 +14,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip throwSnowball;
     [SerializeField] private AudioClip breakIce;
     [SerializeField] private AudioClip happySound;
-    
+    [SerializeField] private AudioClip snowBallHit;
+
     private bool hasPlayEffectSound = false;
     private void Awake()
     {
@@ -35,6 +37,7 @@ public class SoundManager : MonoBehaviour
     public void PlayThrowSound()
     {
         soundEffect.PlayOneShot(throwSnowball);
+        soundEffect.volume = 0.2f;
     }
     public void PlayBreakIce() 
     {
@@ -45,6 +48,11 @@ public class SoundManager : MonoBehaviour
         soundEffect.PlayOneShot(happySound);
         soundEffect.volume = 0.8f;
     }
+    public void PlaySnowBallHitSound() 
+    {
+        soundEffect.PlayOneShot(snowBallHit);
+        soundEffect.volume = 0.5f;
+    }
     public void StopHelpSound() 
     {
         helpSound.Stop();
@@ -53,4 +61,5 @@ public class SoundManager : MonoBehaviour
     {
         bgMusic.Stop();
     }
+    
 }
