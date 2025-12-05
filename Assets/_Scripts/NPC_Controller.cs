@@ -1,8 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using Convai.Scripts;
+using Convai.Scripts.Runtime.Core;
 using DG.Tweening;
+using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class NPC_Controller : MonoBehaviour
@@ -22,6 +24,7 @@ public class NPC_Controller : MonoBehaviour
     private Tween hurryUpTimerTween;
 
     private bool isRescued = false;
+    
 
 
     private void OnEnable()
@@ -35,6 +38,7 @@ public class NPC_Controller : MonoBehaviour
     }
     private void Start()
     {
+        
         this.ShowHelpState();
     }
     private void Update()
@@ -94,6 +98,7 @@ public class NPC_Controller : MonoBehaviour
         if (helpTween != null) helpTween.Kill();
         helpStateNPC.SetActive(false);
         happyStateNPC.SetActive(true);
+      
 
         helpSignal.SetActive(false);
         hurryUpSignal.SetActive(false);
@@ -105,10 +110,10 @@ public class NPC_Controller : MonoBehaviour
         happyStateNPC.transform.DOJump(happyStateNPC.transform.position, 0.5f, 2, 1f);
 
         //Invoke("ReloadScene", 2.5f);
-        DOVirtual.DelayedCall(3.2f, ReloadScene).SetLink(gameObject);
+        //DOVirtual.DelayedCall(3.2f, ReloadScene).SetLink(gameObject);
     }
-    public void ReloadScene()
-    {
-        SceneManager.LoadScene("Main");
-    }
+    //public void ReloadScene()
+    //{
+    //    SceneManager.LoadScene("Main");
+    //}
 }

@@ -5400,7 +5400,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b0d16bc71f8a2e54a8c17576124186ec, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 4c90e2aa7c5b8584ca5af09098bf703f, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.44
   m_Pitch: 1
@@ -9169,7 +9169,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 7cb0d40813564e64f8697f9b69967ccf, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.15
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -14237,6 +14237,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2774220343789017216}
+  - component: {fileID: 2774220343789017220}
   m_Layer: 0
   m_Name: HappyNPC
   m_TagString: Untagged
@@ -14698,6 +14699,27 @@ Transform:
   - {fileID: 527651830}
   m_Father: {fileID: 966078920}
   m_LocalEulerAnglesHint: {x: -73.127, y: 192, z: 0}
+--- !u!95 &2774220343789017220
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2534335996151943883}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!23 &2794318956055438564
 MeshRenderer:
   m_ObjectHideFlags: 0

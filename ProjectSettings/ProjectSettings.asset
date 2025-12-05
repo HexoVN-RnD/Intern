@@ -840,24 +840,24 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: DOTWEEN;PROBUILDER_EXPERIMENTAL_FEATURES
-    EmbeddedLinux: DOTWEEN
-    GameCoreScarlett: DOTWEEN
-    GameCoreXboxOne: DOTWEEN
-    LinuxHeadlessSimulation: DOTWEEN
-    Nintendo Switch: DOTWEEN
-    PS4: DOTWEEN
-    PS5: DOTWEEN
-    QNX: DOTWEEN
+    Android: DOTWEEN;PROBUILDER_EXPERIMENTAL_FEATURES;CC_TOOLS
+    EmbeddedLinux: DOTWEEN;CC_TOOLS
+    GameCoreScarlett: DOTWEEN;CC_TOOLS
+    GameCoreXboxOne: DOTWEEN;CC_TOOLS
+    LinuxHeadlessSimulation: DOTWEEN;CC_TOOLS
+    Nintendo Switch: DOTWEEN;CC_TOOLS
+    PS4: DOTWEEN;CC_TOOLS
+    PS5: DOTWEEN;CC_TOOLS
+    QNX: DOTWEEN;CC_TOOLS
     Server: PROBUILDER_EXPERIMENTAL_FEATURES
-    Stadia: DOTWEEN
-    Standalone: DOTWEEN;PROBUILDER_EXPERIMENTAL_FEATURES
-    VisionOS: DOTWEEN
-    WebGL: DOTWEEN;PROBUILDER_EXPERIMENTAL_FEATURES
-    Windows Store Apps: DOTWEEN
-    XboxOne: DOTWEEN
-    iPhone: DOTWEEN;PROBUILDER_EXPERIMENTAL_FEATURES
-    tvOS: DOTWEEN
+    Stadia: DOTWEEN;CC_TOOLS
+    Standalone: DOTWEEN;PROBUILDER_EXPERIMENTAL_FEATURES;CC_TOOLS
+    VisionOS: DOTWEEN;CC_TOOLS
+    WebGL: DOTWEEN;PROBUILDER_EXPERIMENTAL_FEATURES;CC_TOOLS
+    Windows Store Apps: DOTWEEN;CC_TOOLS
+    XboxOne: DOTWEEN;CC_TOOLS
+    iPhone: DOTWEEN;PROBUILDER_EXPERIMENTAL_FEATURES;CC_TOOLS
+    tvOS: DOTWEEN;CC_TOOLS
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
@@ -964,7 +964,7 @@ PlayerSettings:
   hmiLogStartupTiming: 0
   hmiCpuConfiguration: 
   apiCompatibilityLevel: 6
-  activeInputHandler: 0
+  activeInputHandler: 2
   windowsGamepadBackendHint: 0
   cloudProjectId: 1edbf86f-30a9-44c7-9da7-44faa06f813a
   framebufferDepthMemorylessMode: 0
