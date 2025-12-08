@@ -4,6 +4,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,6 +21,10 @@ public class NPC_Controller : MonoBehaviour
     [Header("Happy Signal State NPC")]
     [SerializeField] GameObject happyStateNPC;
     [SerializeField] GameObject happySignal;
+
+    [Header("Scene Transition")]
+    [SerializeField] private SceneFader sceneFader;
+
     private Tween helpTween; // Lưu tween lại để quản lý
     private Tween hurryUpTimerTween;
 
@@ -44,7 +49,7 @@ public class NPC_Controller : MonoBehaviour
     private void Update()
     {
         if (isRescued) return;
-
+        
         blockingIceCubes.RemoveAll(item => item == null || !item.activeInHierarchy);
         if (blockingIceCubes.Count == 0)
         {
@@ -108,12 +113,23 @@ public class NPC_Controller : MonoBehaviour
         happySignal.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack).SetLink(happySignal); // Thêm .SetLink(...) vào các lệnh DOTween. Điều này đảm bảo nếu NPC bị tắt hoặc destroy đột ngột, các tween này sẽ tự hủy theo, tránh gây lỗi đỏ console.;
 
         happyStateNPC.transform.DOJump(happyStateNPC.transform.position, 0.5f, 2, 1f);
-
-        //Invoke("ReloadScene", 2.5f);
+        PlayerPrefs.SetString("AI", SceneManager.GetActiveScene().name);
+        //Invoke("LoadAIScene", 2f);
         //DOVirtual.DelayedCall(3.2f, ReloadScene).SetLink(gameObject);
+        DOVirtual.DelayedCall(1f, () => {
+            if (sceneFader != null)
+            {
+                sceneFader.FadeToScene("AI");
+            }
+            else 
+            {
+                SceneManager.LoadScene("AI");
+            }
+        }).SetLink(gameObject);
+
     }
-    //public void ReloadScene()
+    //public void LoadAIScene()
     //{
-    //    SceneManager.LoadScene("Main");
+    //    SceneManager.LoadScene("AI");
     //}
 }

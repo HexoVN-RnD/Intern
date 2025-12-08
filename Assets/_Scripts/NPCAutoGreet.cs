@@ -10,7 +10,7 @@ public class NPCAutoGreet : MonoBehaviour
     {
         if (npcComponent != null) return;
         npcComponent = GetComponent<ConvaiNPC>();
-        Invoke(nameof(TriggerGreeting), 0.5f);
+        TriggerGreeting();
     }
 
     private void TriggerGreeting()
