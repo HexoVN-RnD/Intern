@@ -5166,7 +5166,7 @@ Transform:
   m_GameObject: {fileID: 1128418499}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0372, y: 7.2469, z: 9.02}
+  m_LocalPosition: {x: -0.0372, y: 7.2469, z: 9.07}
   m_LocalScale: {x: 19.5599, y: 18.762, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7877,7 +7877,7 @@ MonoBehaviour:
   cam: {fileID: 963194227}
   attackPoint: {fileID: 1326189219}
   snowBall: {fileID: 2272032870724756635, guid: 7da78ff204ee4b643b4f54160848d0f3, type: 3}
-  totalThrows: 100
+  totalThrows: 200
   throwCooldown: 0
   throwKey: 323
   jumpPower: 3
@@ -7960,7 +7960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.066037714, g: 0.063234225, b: 0.063234225, a: 0}
+  m_Color: {r: 0.066037714, g: 0.063234225, b: 0.063234225, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8591,7 +8591,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blackPanel: {fileID: 1772871841}
-  fadeDuration: 4
+  fadeDuration: 2.5
   fadeOnStart: 1
 --- !u!54 &1939280498
 Rigidbody:

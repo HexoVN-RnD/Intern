@@ -113,10 +113,10 @@ public class NPC_Controller : MonoBehaviour
         happySignal.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack).SetLink(happySignal); // Thêm .SetLink(...) vào các lệnh DOTween. Điều này đảm bảo nếu NPC bị tắt hoặc destroy đột ngột, các tween này sẽ tự hủy theo, tránh gây lỗi đỏ console.;
 
         happyStateNPC.transform.DOJump(happyStateNPC.transform.position, 0.5f, 2, 1f);
-        PlayerPrefs.SetString("AI", SceneManager.GetActiveScene().name);
+        //PlayerPrefs.SetString("AI", SceneManager.GetActiveScene().name);
         //Invoke("LoadAIScene", 2f);
         //DOVirtual.DelayedCall(3.2f, ReloadScene).SetLink(gameObject);
-        DOVirtual.DelayedCall(1f, () => {
+        DOVirtual.DelayedCall(2f, () => {
             if (sceneFader != null)
             {
                 sceneFader.FadeToScene("AI");
