@@ -15,6 +15,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip breakIce;
     [SerializeField] private AudioClip happySound;
     [SerializeField] private AudioClip snowBallHit;
+    [SerializeField] private AudioClip iceCrack;
 
     private bool hasPlayEffectSound = false;
     private void Awake()
@@ -42,6 +43,10 @@ public class SoundManager : MonoBehaviour
     public void PlayBreakIce() 
     {
         soundEffect.PlayOneShot(breakIce);
+    }
+    public void PlayCrackIce()
+    {
+        soundEffect.PlayOneShot(iceCrack);
     }
     public void PlayHappySound() 
     {

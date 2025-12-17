@@ -336,6 +336,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6186582998086037378, guid: 69dd98fa71bd5e649969b163d693f61b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6260753959023308940, guid: 69dd98fa71bd5e649969b163d693f61b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -502,7 +506,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1349652393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -627,15 +631,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 11c7fa95dc866fe42ba07b8439443681, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.27
+      value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 11c7fa95dc866fe42ba07b8439443681, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.2
+      value: 0.93
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 11c7fa95dc866fe42ba07b8439443681, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.63
+      value: -1.57
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 11c7fa95dc866fe42ba07b8439443681, type: 3}
       propertyPath: m_LocalRotation.w
@@ -687,6 +691,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 11c7fa95dc866fe42ba07b8439443681, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1492089113}
+    - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 11c7fa95dc866fe42ba07b8439443681, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1492089115}
+    - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 11c7fa95dc866fe42ba07b8439443681, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1492089114}
   m_SourcePrefab: {fileID: -5645937942226959685, guid: 11c7fa95dc866fe42ba07b8439443681, type: 3}
 --- !u!1 &1492089106 stripped
 GameObject:
@@ -896,6 +906,50 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcComponent: {fileID: 0}
+--- !u!114 &1492089114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1492089106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88bce56f6985ef84f8835a0152628fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faceModel: 3
+  <FacialExpressionData>k__BackingField:
+    Head:
+      Renderer: {fileID: 0}
+      VisemeEffectorsList: {fileID: 0}
+      WeightBounds: {x: 0, y: 1}
+    Teeth:
+      Renderer: {fileID: 0}
+      VisemeEffectorsList: {fileID: 0}
+      WeightBounds: {x: 0, y: 1}
+    Tongue:
+      Renderer: {fileID: 0}
+      VisemeEffectorsList: {fileID: 0}
+      WeightBounds: {x: 0, y: 1}
+    JawBoneEffector: {fileID: 0}
+    TongueBoneEffector: {fileID: 0}
+    JawBone: {fileID: 0}
+    TongueBone: {fileID: 0}
+  <WeightBlendingPower>k__BackingField: 0.5
+  characterEmotions: []
+--- !u!114 &1492089115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1492089106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca3ca8129b12656449558f306c86f70d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1554973771
 GameObject:
   m_ObjectHideFlags: 0
