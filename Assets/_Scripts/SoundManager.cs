@@ -43,6 +43,7 @@ public class SoundManager : MonoBehaviour
     public void PlayBreakIce() 
     {
         soundEffect.PlayOneShot(breakIce);
+        soundEffect.volume = 0.16f;
     }
     public void PlayCrackIce()
     {

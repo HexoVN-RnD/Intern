@@ -15,13 +15,27 @@ public class SnowBall : MonoBehaviour
         Vector3 impactNormal = collision.contacts[0].normal;// lay vecto phap tuyen diem va cham
         if (impactSnowBallEffect != null)
         {
+            Vector3 effectSpawn = impactPoint + (impactNormal * 0.3f); 
             GameObject g = PoolManager.Instance.GetFromPool(impactSnowBallEffect);
-            g.transform.position = impactPoint;
+            g.transform.position = effectSpawn;
             g.transform.rotation = Quaternion.identity;
             //Instantiate(impactSnowBallEffect, impactPoint, transform.rotation);// can obj pooling de toi uu }
         }
         Debug.Log("sasd");
-        //Destroy(gameObject);
+
+        //KẾT NỐI VỚI ICE BREAK MANAGER
+        IceBreakManager manager = FindObjectOfType<IceBreakManager>();
+        if (manager != null)
+        {
+            // Báo cáo: "Tôi ném trúng thằng này, tại vị trí này"
+            manager.ProcessHit(collision.gameObject, impactPoint);
+        }
+        else
+        {
+            // Debug để biết nếu quên chưa tạo Manager
+            // Debug.LogWarning("Chưa có IceBreakManager trong Scene!");
+        }
+
         if (myTween != null)
         {
             myTween.Kill();
@@ -42,9 +56,9 @@ public class SnowBall : MonoBehaviour
             Projector proj = g.GetComponent<Projector>();
             if (proj != null)
             {
-                
+
                 if (!proj.material.name.Contains("Instance")) proj.material = new Material(proj.material);
-                                                                                                          //Material matInstance = new Material(proj.material);// Tạo bản sao material để không bị ảnh hưởng các vết khác
+                //Material matInstance = new Material(proj.material);// Tạo bản sao material để không bị ảnh hưởng các vết khác
                 Color c = proj.material.color;// Reset màu về 1 (vì lấy từ pool có thể đang tàng hình)
                 c.a = 1f;
                 proj.material.color = c;

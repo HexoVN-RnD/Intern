@@ -29,9 +29,6 @@ public class NPC_Controller : MonoBehaviour
     private Tween hurryUpTimerTween;
 
     private bool isRescued = false;
-    
-
-
     private void OnEnable()
     {
         GameEvent.OnIceBroken += TriggerHurryUp;// Đăng ký: Khi sự kiện OnIceBroken xảy ra -> Chạy hàm TriggerHurryUp
@@ -116,16 +113,16 @@ public class NPC_Controller : MonoBehaviour
         //PlayerPrefs.SetString("AI", SceneManager.GetActiveScene().name);
         //Invoke("LoadAIScene", 2f);
         //DOVirtual.DelayedCall(3.2f, ReloadScene).SetLink(gameObject);
-        DOVirtual.DelayedCall(2f, () => {
-            if (sceneFader != null)
-            {
-                sceneFader.FadeToScene("AI");
-            }
-            else 
-            {
-                SceneManager.LoadScene("AI");
-            }
-        }).SetLink(gameObject);
+        //DOVirtual.DelayedCall(2f, () => {
+        //    if (sceneFader != null)
+        //    {
+        //        sceneFader.FadeToScene("AI");
+        //    }
+        //    else 
+        //    {
+        //        SceneManager.LoadScene("AI");
+        //    }
+        //}).SetLink(gameObject);
 
     }
     //public void LoadAIScene()
