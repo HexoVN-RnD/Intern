@@ -9,19 +9,28 @@ public class SnowBall : MonoBehaviour
     [SerializeField] private GameObject impactSnowBallEffect;
     [SerializeField] private GameObject splatProjector;
     private Tween myTween;
+    //private bool hasCollided = false;
+
+    //private void OnEnable()
+    //{
+    //    hasCollided = false;
+    //}
     private void OnCollisionEnter(Collision collision)
     {
+        //if (hasCollided) return;
+
+        //hasCollided = true;
         Vector3 impactPoint = collision.contacts[0].point;// lay diem va cham dau tien
         Vector3 impactNormal = collision.contacts[0].normal;// lay vecto phap tuyen diem va cham
         if (impactSnowBallEffect != null)
         {
-            Vector3 effectSpawn = impactPoint + (impactNormal * 0.3f); 
+            Vector3 effectSpawn = impactPoint + (impactNormal * 0.5f);
             GameObject g = PoolManager.Instance.GetFromPool(impactSnowBallEffect);
             g.transform.position = effectSpawn;
             g.transform.rotation = Quaternion.identity;
             //Instantiate(impactSnowBallEffect, impactPoint, transform.rotation);// can obj pooling de toi uu }
         }
-        Debug.Log("sasd");
+        //Debug.Log("sasd");
 
         //KẾT NỐI VỚI ICE BREAK MANAGER
         IceBreakManager manager = FindObjectOfType<IceBreakManager>();

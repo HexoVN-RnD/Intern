@@ -1,10 +1,13 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class IceBreakManager : MonoBehaviour
 {
+    public static Action OnAnyHit;
+
     [Header("--- Setup References ---")]
     [SerializeField] private Transform stage1Root;
     [SerializeField] private Transform stage2Root;
@@ -26,10 +29,14 @@ public class IceBreakManager : MonoBehaviour
     [SerializeField] private GameObject iceHitVFXPrefab;
 
     [SerializeField] private float neighborRadius = 2f;
+    [SerializeField] private NPC_Controller nPC_Controller;
 
     private Dictionary<GameObject, GameObject> map1_to_2 = new Dictionary<GameObject, GameObject>();
     private Dictionary<GameObject, List<GameObject>> map2_to_3 = new Dictionary<GameObject, List<GameObject>>();
     private Dictionary<GameObject, List<GameObject>> map3_lookup = new Dictionary<GameObject, List<GameObject>>();
+    private Dictionary<GameObject, GameObject> map3_to_1 = new Dictionary<GameObject, GameObject>();
+    private Dictionary<GameObject, GameObject> map2_to_1 = new Dictionary<GameObject, GameObject>();
+
 
     private void Start()
     {
@@ -51,7 +58,10 @@ public class IceBreakManager : MonoBehaviour
         foreach (Transform s1 in stage1Root)
         {
             Transform s2 = stage2Root.Find(s1.name);
-            if (s2 != null) map1_to_2.Add(s1.gameObject, s2.gameObject);
+            if (s2 != null)
+            {
+                map1_to_2.Add(s1.gameObject, s2.gameObject); map2_to_1.Add(s2.gameObject, s1.gameObject);
+            }
         }
         //Map Stage 2 -> Stage 3 (DỰA TRÊN LIST  ĐÃ CHỈNH Ở INSPECTOR)
         foreach (var cluster in shardClusters)
@@ -62,6 +72,12 @@ public class IceBreakManager : MonoBehaviour
             {
                 map2_to_3.Add(cluster.crackedPart, cluster.shards);
             }
+            GameObject originStage1 = null;
+            //Tìm ra (Stage 1) của nhóm vụn này
+            if (map2_to_1.ContainsKey(cluster.crackedPart))
+            {
+                originStage1 = map2_to_1[cluster.crackedPart];
+            }
             //Map ngược: Từ vụn -> Nhóm
             foreach (var shard in cluster.shards)
             {
@@ -70,6 +86,11 @@ public class IceBreakManager : MonoBehaviour
                 if (!map3_lookup.ContainsKey(shard))
                 {
                     map3_lookup.Add(shard, cluster.shards);
+                }
+                // [MỚI] Lưu map: Mảnh vụn này thuộc về Ông tổ Stage 1 nào
+                if (originStage1 != null && !map3_to_1.ContainsKey(shard))
+                {
+                    map3_to_1.Add(shard, originStage1);
                 }
                 // Setup vật lý luôn để đảm bảo không quên
                 Rigidbody rb = shard.GetComponent<Rigidbody>();
@@ -85,6 +106,7 @@ public class IceBreakManager : MonoBehaviour
     }
     public void ProcessHit(GameObject hitObj, Vector3 hitPoint)
     {
+        OnAnyHit?.Invoke();
         if (map1_to_2.ContainsKey(hitObj))
         {
             //GameObject s2 = map1_to_2[hitObj];
@@ -107,8 +129,9 @@ public class IceBreakManager : MonoBehaviour
                 {
                     // Sinh ra Particle tại điểm va chạm (hitPoint) thì sẽ chuẩn hơn là tâm object
                     // Tuy nhiên, dùng hitObj.transform.position an toàn hơn nếu hitPoint bị lệch
-                    GameObject vfx = Instantiate(iceHitVFXPrefab, hitObj.transform.position, Quaternion.identity);
-
+                    //GameObject vfx = Instantiate(iceHitVFXPrefab, hitObj.transform.position, Quaternion.identity);
+                    GameObject vfx = PoolManager.Instance.GetFromPool(iceHitVFXPrefab);
+                    vfx.transform.position = hitObj.transform.position;
                     // Mẹo: Hướng vụn băng nổ ra phía ngoài (theo hướng pháp tuyến của mảnh băng)
                     vfx.transform.rotation = hitObj.transform.rotation;
                 }
@@ -122,11 +145,11 @@ public class IceBreakManager : MonoBehaviour
             }
             // 2. XỬ LÝ HÀNG XÓM (Neighbors) -> Sang Stage 2 (Nứt)
             Collider[] neighbors = Physics.OverlapSphere(hitPoint, neighborRadius);
-            foreach (var col in neighbors) 
+            foreach (var col in neighbors)
             {
                 GameObject neighborObj = col.gameObject;
                 // Chỉ xử lý nếu là mảnh Stage 1 và KHÔNG PHẢI mảnh vừa ném trúng
-                if (neighborObj != hitObj && map1_to_2.ContainsKey(neighborObj)) 
+                if (neighborObj != hitObj && map1_to_2.ContainsKey(neighborObj))
                 {
                     GameObject neighborStage2 = map1_to_2[neighborObj];
                     neighborObj.SetActive(false);
@@ -166,13 +189,61 @@ public class IceBreakManager : MonoBehaviour
                     rb.AddExplosionForce(explosionForce, hitPoint, 2f);
                 }
             }
+
+            if (map3_to_1.ContainsKey(hitObj))
+            {
+                GameObject originStage1 = map3_to_1[hitObj];
+                if (nPC_Controller != null)
+                {
+                    nPC_Controller.ReportBrokenIce(originStage1);
+                }
+            }
             GameEvent.OnIceBroken?.Invoke();
             SoundManager.Instance.PlayBreakIce();
             DOVirtual.DelayedCall(disappearDelay, () =>
             {
                 foreach (var s in siblings) if (s != null) s.SetActive(false);
             });
+            if (CamShake.Instance != null) 
+            {
+                CamShake.Instance.Shake(0.3f, 0.15f);
+            }
         }
+    }
+    public List<GameObject> GetActiveVisualsFromStage1(GameObject stage1Obj)
+    {
+        List<GameObject> result = new List<GameObject>();
+        if (stage1Obj == null) return result;
+        // 1. Nếu Stage 1 đang hiện -> Trả về nó
+        if (stage1Obj.activeInHierarchy)
+        {
+            result.Add(stage1Obj);
+            return result;
+        }
+        // 2. Nếu đã nứt sang Stage 2
+        if (map1_to_2.ContainsKey(stage1Obj))
+        {
+            GameObject stage2Obj = map1_to_2[stage1Obj];
+            if (stage2Obj != null && stage2Obj.activeInHierarchy) 
+            {
+                result.Add(stage2Obj);
+                return result;
+            }
+            // 3. Nếu đã vỡ sang Stage 3 (Vụn)
+            if (map2_to_3.ContainsKey(stage2Obj)) 
+            {
+                List<GameObject> shards = map2_to_3[stage2Obj];
+                foreach (var s in shards) 
+                {
+                    // Chỉ lấy những mảnh còn đang active (chưa rơi mất)
+                    if (s != null && s.activeInHierarchy) 
+                    {
+                        result.Add(s);
+                    }    
+                }
+            }
+        }
+        return result;
     }
     private void OnDrawGizmosSelected()
     {
