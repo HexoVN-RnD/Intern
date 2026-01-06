@@ -178,12 +178,13 @@ public class NPC_Controller : MonoBehaviour
         //PlayerPrefs.SetString("AI", SceneManager.GetActiveScene().name);
         //Invoke("LoadAIScene", 2f);
         //DOVirtual.DelayedCall(3.2f, ReloadScene).SetLink(gameObject);
-        //DOVirtual.DelayedCall(2f, () => {
+        //DOVirtual.DelayedCall(2f, () =>
+        //{
         //    if (sceneFader != null)
         //    {
-        //        sceneFader.FadeToScene("AI");
+        //        sceneFader.FadeToScene("AI",2f);
         //    }
-        //    else 
+        //    else
         //    {
         //        SceneManager.LoadScene("AI");
         //    }

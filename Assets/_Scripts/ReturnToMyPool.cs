@@ -8,6 +8,7 @@ public class ReturnToMyPool : MonoBehaviour
 
     public void OnDisable()
     {
+        if (myPool == null) return;
         myPool.AddToMyPool(gameObject);
     }
 }

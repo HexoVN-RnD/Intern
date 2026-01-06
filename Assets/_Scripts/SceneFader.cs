@@ -22,13 +22,16 @@ public class SceneFader : MonoBehaviour
             });
         }
     }
-    public void FadeToScene(string sceneName)
+    public void FadeToScene(string sceneName, float overrideDuration = -1f)
     {
         blackPanel.blocksRaycasts = true; // Chặn click
         blackPanel.DOKill();
 
+        float duration = overrideDuration > 0 ? overrideDuration : fadeDuration;
+
         // Fade từ 0 lên 1 (Đen dần)
-        blackPanel.DOFade(1, fadeDuration).SetEase(Ease.Linear).OnComplete(() => {
+        blackPanel.DOFade(1, fadeDuration).SetEase(Ease.Linear).OnComplete(() =>
+        {
             // Khi đã đen kịt thì mới Load Scene
             SceneManager.LoadScene(sceneName);
         });

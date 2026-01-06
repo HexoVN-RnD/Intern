@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bf997aa7f1f30c42a4a65e085c09114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  impactSnowBallEffect: {fileID: 261336440628652647, guid: c043924fb20b9db4da02c584e040ecc7, type: 3}
+  impactSnowBallEffect: {fileID: 4919808555089642522, guid: f9dae187034ab9842bdcb68ad0a6a705, type: 3}
   splatProjector: {fileID: 7777790288384358601, guid: faa4e33f3de14754d90f94e57e7c3720, type: 3}
 --- !u!54 &-7788334718935973104
 Rigidbody:

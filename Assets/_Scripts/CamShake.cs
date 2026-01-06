@@ -15,5 +15,4 @@ public class CamShake : MonoBehaviour
     {
         transform.DOShakePosition(duration, strength, 10, 90, false, true).SetLink(gameObject);
     }
-
 }

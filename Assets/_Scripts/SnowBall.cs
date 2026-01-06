@@ -9,19 +9,35 @@ public class SnowBall : MonoBehaviour
     [SerializeField] private GameObject impactSnowBallEffect;
     [SerializeField] private GameObject splatProjector;
     private Tween myTween;
-    //private bool hasCollided = false;
 
-    //private void OnEnable()
-    //{
-    //    hasCollided = false;
-    //}
+    private bool hasCollided = false;
+
+    private void OnEnable()
+    {
+        hasCollided = false;
+    }
     private void OnCollisionEnter(Collision collision)
     {
-        //if (hasCollided) return;
+        if (hasCollided) return;
+        if (collision.contacts.Length > 0)
+        {
+            ContactPoint contact = collision.contacts[0];
+            PerformHit(contact.point, contact.normal, collision.gameObject);
+        }
 
         //hasCollided = true;
-        Vector3 impactPoint = collision.contacts[0].point;// lay diem va cham dau tien
-        Vector3 impactNormal = collision.contacts[0].normal;// lay vecto phap tuyen diem va cham
+
+    }
+    public void ForceCollision(RaycastHit hit)
+    {
+        if (hasCollided) return;
+        PerformHit(hit.point, hit.normal, hit.collider.gameObject);
+    }
+    private void PerformHit(Vector3 hitPoint, Vector3 hitNormal, GameObject hitObject)
+    {
+        hasCollided = true; // Khóa lại ngay lập tức để tránh nổ kép
+        Vector3 impactPoint = hitPoint;// lay diem va cham dau tien
+        Vector3 impactNormal = hitNormal;// lay vecto phap tuyen diem va cham
         if (impactSnowBallEffect != null)
         {
             Vector3 effectSpawn = impactPoint + (impactNormal * 0.5f);
@@ -37,7 +53,7 @@ public class SnowBall : MonoBehaviour
         if (manager != null)
         {
             // Báo cáo: "Tôi ném trúng thằng này, tại vị trí này"
-            manager.ProcessHit(collision.gameObject, impactPoint);
+            manager.ProcessHit(hitObject, hitPoint);
         }
         else
         {
@@ -51,7 +67,7 @@ public class SnowBall : MonoBehaviour
             myTween = null;
         }
 
-        if (splatProjector != null && collision.gameObject.CompareTag("Wall"))
+        if (splatProjector != null && hitObject.gameObject.CompareTag("Wall"))
         {
             Quaternion splatRotation = Quaternion.LookRotation(-impactNormal);// "LookRotation" sẽ xoay cái Quad của chúng ta
                                                                               // sao cho nó "hướng mặt" theo hướng của bề mặt (normal)
@@ -61,21 +77,23 @@ public class SnowBall : MonoBehaviour
             GameObject g = PoolManager.Instance.GetFromPool(splatProjector);
             g.transform.position = splatPos;
             g.transform.rotation = splatRotation;
-            g.transform.SetParent(collision.transform);
+            g.transform.SetParent(hitObject.transform);
             Projector proj = g.GetComponent<Projector>();
             if (proj != null)
             {
 
-                if (!proj.material.name.Contains("Instance")) proj.material = new Material(proj.material);
+                //if (!proj.material.name.Contains("Instance")) proj.material = new Material(proj.material);
+                Material mat = proj.material;
                 //Material matInstance = new Material(proj.material);// Tạo bản sao material để không bị ảnh hưởng các vết khác
-                Color c = proj.material.color;// Reset màu về 1 (vì lấy từ pool có thể đang tàng hình)
+                Color c = mat.color;// Reset màu về 1 (vì lấy từ pool có thể đang tàng hình)
                 c.a = 1f;
-                proj.material.color = c;
+                mat.color = c;
 
                 proj.material.DOFade(0, 2f).SetDelay(2f).SetLink(g).OnComplete(() =>
                 {
                     //Destroy(splat);
-                    if (g != null) g.gameObject.SetActive(false);
+                    if (g != null) { g.gameObject.SetActive(false); g.transform.SetParent(null); }
+                    
                 });
             }
         }

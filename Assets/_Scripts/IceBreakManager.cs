@@ -16,6 +16,7 @@ public class IceBreakManager : MonoBehaviour
     [Header("--- Physics Settings ---")]
     [SerializeField] private float explosionForce = 50f;
     [SerializeField] private float disappearDelay = 2.0f;
+    [SerializeField] private float popOutForce = 5f;
 
     [Header("--- MANUAL MAPPING (Kéo thả ở đây) ---")]
     [SerializeField] public List<IceCluster> shardClusters = new List<IceCluster>();// Danh sách này sẽ hiện lên Inspector để chỉnh sửa
@@ -98,8 +99,8 @@ public class IceBreakManager : MonoBehaviour
                 rb.isKinematic = true;
                 if (shard.GetComponent<Collider>() == null)
                 {
-                    MeshCollider mc = shard.AddComponent<MeshCollider>();
-                    mc.convex = true;
+                    BoxCollider mc = shard.AddComponent<BoxCollider>();
+                    //mc.convex = true;
                 }
             }
         }
@@ -164,7 +165,8 @@ public class IceBreakManager : MonoBehaviour
             {
                 // Sinh ra Particle tại điểm va chạm (hitPoint) thì sẽ chuẩn hơn là tâm object
                 // Tuy nhiên, dùng hitObj.transform.position an toàn hơn nếu hitPoint bị lệch
-                GameObject vfx = Instantiate(iceHitVFXPrefab, hitObj.transform.position, Quaternion.identity);
+                GameObject vfx = PoolManager.Instance.GetFromPool(iceHitVFXPrefab);
+                vfx.transform.position = hitObj.transform.position;
 
                 // Mẹo: Hướng vụn băng nổ ra phía ngoài (theo hướng pháp tuyến của mảnh băng)
                 vfx.transform.rotation = hitObj.transform.rotation;
@@ -187,6 +189,12 @@ public class IceBreakManager : MonoBehaviour
                 {
                     rb.isKinematic = false;
                     rb.AddExplosionForce(explosionForce, hitPoint, 2f);
+                    if (Camera.main != null) 
+                    {
+                        Vector3 directionToCamera = (Camera.main.transform.position - hitPoint).normalized;
+                        rb.AddForce((directionToCamera + Vector3.up * 0.5f) * popOutForce, ForceMode.Impulse);// Đẩy mảnh băng bay về phía camera + bay lên trời một chút (Vector3.up * 0.5f) cho đẹp
+                    }
+                    
                 }
             }
 
@@ -206,7 +214,7 @@ public class IceBreakManager : MonoBehaviour
             });
             if (CamShake.Instance != null) 
             {
-                CamShake.Instance.Shake(0.3f, 0.15f);
+                CamShake.Instance.Shake(0.3f, 0.1f);
             }
         }
     }
